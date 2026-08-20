@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ data.name }} - Portfolio</title>
+    <meta name="description" content="Portfolio of {{ data.name }}, {{ data.role }}">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <canvas id="particles-bg"></canvas>
+    
+    <nav class="navbar">
+        <div class="nav-content">
+            <a href="#" class="logo">&lt;AM/&gt;</a>
+            <ul class="nav-links">
+                <li><a href="#about">About</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#experience">Experience</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="menu-btn">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <section id="hero" class="hero">
+            <div class="hero-content fade-in">
+                <p class="greeting">Hi, I'm</p>
+                <h1 class="name">{{ data.name }}</h1>
+                <h2 class="role typing-text"></h2>
+                <p class="summary">{{ data.summary }}</p>
+                <div class="cta-buttons">
+                    <a href="#contact" class="btn primary-btn">Get In Touch</a>
+                    <a href="#projects" class="btn secondary-btn">View Work</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="about section-padding">
+            <div class="section-header fade-in-scroll">
+                <h2><span class="num">01.</span> About Me</h2>
+                <div class="line"></div>
+            </div>
+            <div class="about-content glass-card fade-in-scroll">
+                <div class="education-block">
+                    <h3>Education</h3>
+                    {% for edu in data.education %}
+                    <div class="edu-item">
+                        <h4>{{ edu.degree }}</h4>
+                        <p class="institution">{{ edu.institution }} | {{ edu.duration }}</p>
+                        <p class="affiliation">{{ edu.affiliation }}</p>
+                        <ul class="points">
+                            {% for point in edu.points %}
+                            <li>{{ point }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+
+        <section id="skills" class="skills section-padding">
+            <div class="section-header fade-in-scroll">
+                <h2><span class="num">02.</span> Skills & Tech Stack</h2>
+                <div class="line"></div>
+            </div>
+            <div class="skills-container fade-in-scroll">
+                {% for category, skill_list in data.skills.items() %}
+                <div class="skill-category glass-card">
+                    <h3>{{ category }}</h3>
+                    <div class="skill-tags">
+                        {% for skill in skill_list %}
+                        <span class="tag">{{ skill }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <section id="experience" class="experience section-padding">
+            <div class="section-header fade-in-scroll">
+                <h2><span class="num">03.</span> Experience</h2>
+                <div class="line"></div>
+            </div>
+            <div class="timeline fade-in-scroll">
+                {% for exp in data.experience %}
+                <div class="timeline-item glass-card">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <h3>{{ exp.role }} <span class="highlight">@ {{ exp.company }}</span></h3>
+                        <p class="type">{{ exp.type }}</p>
+                        <ul class="points">
+                            {% for point in exp.points %}
+                            <li>{{ point }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <section id="projects" class="projects section-padding">
+            <div class="section-header fade-in-scroll">
+                <h2><span class="num">04.</span> Featured Projects</h2>
+                <div class="line"></div>
+            </div>
+            <div class="projects-grid">
+                {% for project in data.projects %}
+                <div class="project-card glass-card fade-in-scroll">
+                    <div class="project-top">
+                        <div class="folder-icon"><i class="far fa-folder"></i></div>
+                        <div class="project-links">
+                            {% if project.link %}
+                            <a href="{{ project.link }}" target="_blank"><i class="fab fa-github"></i></a>
+                            <a href="{{ project.link }}" target="_blank"><i class="fas fa-external-link-alt"></i></a>
+                            {% else %}
+                            <a href="#"><i class="fab fa-github"></i></a>
+                            <a href="#"><i class="fas fa-external-link-alt"></i></a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <h3 class="project-title">{{ project.title }}</h3>
+                    <p class="project-type">{{ project.type }}</p>
+                    <ul class="points">
+                        {% for point in project.points %}
+                        <li>{{ point }}</li>
+                        {% endfor %}
+                    </ul>
+                    <div class="tech-stack">
+                        {% for tech in project.technologies.split(', ') %}
+                        <span>{{ tech }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+        
+        <section id="certifications" class="certifications section-padding">
+            <div class="section-header fade-in-scroll">
+                <h2><span class="num">05.</span> Certifications</h2>
+                <div class="line"></div>
+            </div>
+            <div class="cert-grid">
+                {% for cert in data.certifications %}
+                <div class="cert-card glass-card fade-in-scroll">
+                    <i class="fas fa-award cert-icon"></i>
+                    <h3>{{ cert.title }}</h3>
+                    <p class="issuer">{{ cert.issuer }}</p>
+                    <p class="cert-desc">{{ cert.description }}</p>
+                    {% if cert.image %}
+                    <a href="{{ cert.image }}" target="_blank" class="btn primary-btn" style="margin-top: 15px; padding: 0.5rem 1rem; font-size: 0.85rem;">View Certificate</a>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <section id="contact" class="contact section-padding fade-in-scroll">
+            <h2 class="contact-title">Get In Touch</h2>
+            <p class="contact-text">Currently looking for new opportunities in AI/ML and Software Engineering. Whether you have a question or just want to say hi, I'll try my best to get back to you!</p>
+            <div class="contact-info glass-card">
+                <a href="mailto:{{ data.email }}" class="contact-item">
+                    <i class="fas fa-envelope"></i> {{ data.email }}
+                </a>
+                <a href="tel:{{ data.phone }}" class="contact-item">
+                    <i class="fas fa-phone"></i> {{ data.phone }}
+                </a>
+                <a href="#" class="contact-item">
+                    <i class="fas fa-map-marker-alt"></i> {{ data.location }}
+                </a>
+            </div>
+            <a href="mailto:{{ data.email }}" class="btn primary-btn contact-btn">Say Hello</a>
+        </section>
+    </main>
+
+    <footer>
+        <div class="social-links">
+            <a href="{{ data.github }}" target="_blank"><i class="fab fa-github"></i></a>
+            <a href="{{ data.linkedin }}" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+            <a href="mailto:{{ data.email }}"><i class="fas fa-envelope"></i></a>
+        </div>
+        <p>Built by {{ data.name }}</p>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script>
+        // Pass data to JS for typing effect
+        window.portfolioRole = "{{ data.role | safe }}";
+    </script>
+</body>
+</html>
